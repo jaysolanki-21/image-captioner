@@ -6,7 +6,7 @@ const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.frontend_url || "http://localhost:5173",
     credentials: true
 }));
 app.use(cookieParser());
