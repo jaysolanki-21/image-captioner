@@ -1,0 +1,45 @@
+# Node modules (client & server)
+**/node_modules/
+**/npm-debug.log
+
+# Environment variables
+**/.env
+**/.env.* 
+
+# Logs
+**/logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+**/build/
+**/dist/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# VSCode settings
+.vscode/
+
+# Coverage / test reports
+coverage/
+*.lcov
+
+# React production build
+client/build/
+
+# MongoDB dump files
+dump/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Optional: Ignore uploads or image cache if stored locally
+uploads/
+images/
+
