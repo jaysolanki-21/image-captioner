@@ -413,14 +413,13 @@
 
 // export default EditPage;
 
-
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import { Heart, Share2, Copy, Zap, Languages } from "lucide-react";
 import { toast } from "react-hot-toast";
-
+import api from "../lib/api";
 
 const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
   const location = useLocation();
@@ -456,10 +455,14 @@ const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
 
       if (previewImage.startsWith("data:")) {
         const byteString = atob(previewImage.split(",")[1]);
-        const mimeString = previewImage.split(",")[0].split(":")[1].split(";")[0];
+        const mimeString = previewImage
+          .split(",")[0]
+          .split(":")[1]
+          .split(";")[0];
         const ab = new ArrayBuffer(byteString.length);
         const ia = new Uint8Array(ab);
-        for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+        for (let i = 0; i < byteString.length; i++)
+          ia[i] = byteString.charCodeAt(i);
         const blob = new Blob([ab], { type: mimeString });
         file = new File([blob], "uploaded-image.jpg", { type: mimeString });
       } else {
@@ -471,14 +474,10 @@ const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
       formData.append("file", file);
       formData.append("language", language);
 
-      const response = await axios.post(
-        `http://localhost:3000/api/images/upload`,
-        formData,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await api.post(`/api/images/upload`, formData, {
+        withCredentials: true, // send cookies
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       const backendCaption = response.data?.caption || "No caption returned.";
       const postId = response.data?.postId || response.data?.post?._id || null;
@@ -517,11 +516,12 @@ const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
     setProcessingLikes((p) => ({ ...p, [captionObj.postId]: true }));
 
     try {
-      const res = await axios.post(
-        `http://localhost:3000/api/images/like/${captionObj.postId}`,
-        {},
-        { withCredentials: true }
+      const res = await api.post(
+        `/api/images/like/${captionObj.postId}`,
+        {}, 
+        { withCredentials: true } 
       );
+
       toast.success(res?.data?.message || "Updated");
     } catch (err) {
       console.error("Like failed", err);
@@ -699,8 +699,9 @@ const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
             </ul>
           ) : (
             <p className="text-sm text-gray-500 text-center mt-6">
-              Click <span className="text-indigo-600 font-medium">Generate</span>{" "}
-              to create captions.
+              Click{" "}
+              <span className="text-indigo-600 font-medium">Generate</span> to
+              create captions.
             </p>
           )}
 
