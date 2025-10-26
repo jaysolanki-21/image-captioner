@@ -472,14 +472,10 @@ const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
       formData.append("file", file);
       formData.append("language", language);
 
-      const response = await axios.post(
-        `http://localhost:3000/api/images/upload`,
-        formData,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await api.post(`/api/images/upload`, formData, {
+        withCredentials: true, // send cookies
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       const backendCaption = response.data?.caption || "No caption returned.";
       const postId = response.data?.postId || response.data?.post?._id || null;
