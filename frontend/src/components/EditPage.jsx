@@ -58,14 +58,16 @@ const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
       formData.append("file", file);
       formData.append("language", language);
 
-      const response = await axios.post(
-        `http:///api/images/upload`,
+      const response = await api.post(
+        "/api/images/caption",
         formData,
         {
-          withCredentials: true,
           headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         }
       );
+    
+        }
 
       const backendCaption = response.data?.caption || "No caption returned.";
       const postId = response.data?.postId || response.data?.post?._id || null;
