@@ -108,7 +108,11 @@ const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
     setProcessingLikes((p) => ({ ...p, [captionObj.postId]: true }));
 
     try {
-      const res = await api.post(`/api/posts/like/${captionObj.postId}`);
+      const res = await api.post(
+        `/api/images/like/${captionObj.postId}`,
+        {}, 
+        { withCredentials: true } 
+      );
       toast.success(res?.data?.message || "Updated");
     } catch (err) {
       console.error("Like failed", err);
