@@ -5,6 +5,7 @@ import Header from "./Header";
 import { Heart, Share2, Copy, Zap, Languages } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Confetti from "react-confetti";
+import api from "../lib/api";
 
 
 const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
@@ -58,7 +59,7 @@ const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
       formData.append("language", language);
 
       const response = await axios.post(
-        `http://localhost:3000/api/images/upload`,
+        `http:///api/images/upload`,
         formData,
         {
           withCredentials: true,
@@ -107,11 +108,7 @@ const EditPage = ({ onOpenModal, isAuthenticated, setIsAuthenticated }) => {
     setProcessingLikes((p) => ({ ...p, [captionObj.postId]: true }));
 
     try {
-      const res = await axios.post(
-        `http://localhost:3000/api/images/like/${captionObj.postId}`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await api.post(`/api/posts/like/${captionObj.postId}`);
       toast.success(res?.data?.message || "Updated");
     } catch (err) {
       console.error("Like failed", err);
